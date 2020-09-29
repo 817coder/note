@@ -1,7 +1,7 @@
 JVM参数设置
 1.基本参数
 
-![image](https://github.com/wangjunjie0817/note/blob/master/images/jvmParam.png)
+!(https://github.com/wangjunjie0817/note/blob/master/images/jvmParam.png)
 
 5.启动参数例子
 jdk8启动  -server -Xms1366m -Xmx2g -Xmn768m -Xss256k -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256M -XX:SurvivorRatio=8 -XX:MaxTenuringThreshold=5 -XX:GCTimeRatio=19 -Xnoclassgc -XX:+DisableExplicitGC -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCsBeforeCompaction=0 -XX:-CMSParallelRemarkEnabled -XX:CMSInitiatingOccupancyFraction=70 -XX:SoftRefLRUPolicyMSPerMB=0 -XX:+PrintClassHistogram -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:/data/logs/api-gc.log
