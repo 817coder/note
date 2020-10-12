@@ -14,7 +14,7 @@
 
 8. [迭代器]()
 
-9. HashCode和equels
+9. [HashCode和equels](https://github.com/wangjunjie0817/note/blob/master/java/equalsNote.md)
 
 10. 跳表
 
