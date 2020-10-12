@@ -6,7 +6,7 @@
 
 4. [int & Integer](https://github.com/wangjunjie0817/code/blob/master/javaDemo/src/main/java/com/wang/code/IntegerDemo.java)
 
-5. [java容器](https://github.com/wangjunjie0817/note/edit/master/java/collectionNote.md)
+5. [java容器](https://github.com/wangjunjie0817/note/blob/master/java/collectionNote.md)
    
 6. [Serializable](https://github.com/wangjunjie0817/note/blob/master/java/serializableNote.md)
 
