@@ -1,5 +1,5 @@
 # 容器
-容器可以分为两个大类： Collection和Map
+容器可以分为三个大类： Collection、Map、Queue
 ### Map的类关系为：
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/map.png)
 
@@ -29,6 +29,15 @@ hash
 基于HashMap，key为 set 的元素，value是 PRESENT 对象
 #### TreeSet
 基于TreeMap实现
+
+### Queue
+#### LinkedList
+#### ArrayDeque
+#### PriorityQueue
+
+### Stack
+最后补充一个比较奇葩的数据结构   Stack
+stack底层基于Vector   整个类也比较简单，就三个主要方法   push 、pop 、peek
 
 ### 最后补充知乎上关于容器初始化容积的问题
 
