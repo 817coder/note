@@ -32,8 +32,11 @@ hash
 
 ### Queue
 #### LinkedList
+底层基于链表实现的双端队列
 #### ArrayDeque
+底层基于数组存储实现的双端队列
 #### PriorityQueue
+优先队列底层基于数组实现的大顶堆、小顶堆
 
 ### Stack
 最后补充一个比较奇葩的数据结构   Stack
