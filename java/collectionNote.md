@@ -28,9 +28,9 @@ hash
 #### HashSet
 基于HashMap，key为 set 的元素，value是 PRESENT 对象
 #### TreeSet
+基于TreeMap实现
 
-
-最后补充知乎上关于容器初始化容积的问题
+### 最后补充知乎上关于容器初始化容积的问题
 
 JDK1.7的实现中：
 1. HashMap 和 HashSet 的默认大小是16。
