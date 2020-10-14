@@ -258,6 +258,7 @@ static final class HeadIndex<K,V> extends Index<K,V> {
     }
 }
 ```
+
 HeadIndex 没什么特别, 只是增加一个 level 属性用来标示索引层级; 注意所有的 HeadIndex 都指向同一个 Base_header 节点;
 
 OK, 下面我们来看看 ConcurrentSkipListMap 的主要方法 doPut, doGet, doRemove
@@ -424,7 +425,9 @@ private V doPut(K key, V value, boolean onlyIfAbstsent){
     return null;
 }
 ```
+
 doPut方法分析:
+
 整个doPut方法看起来有点吓人, 但没事,我们将这个方法进行分割:
 
 - 获取前继节点(步骤1 findPredecessor), 进行节点的插入 (步骤 10 b.casNext(n, z))
@@ -435,12 +438,16 @@ doPut方法分析:
 
 #### doPut() 增加数据过程
 1. ConcurrentSkipListMap在新建时的初始状态如图:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip1.png)
+
 初始时, 只存在 HeadIndex 和 Base_Header 节点
 
 2. 进行节点添加
 2.1. 添加 key=1, value = A 节点, 结果如图:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip2.png)
+
 涉及doPut操作：
 - 1. doPut步骤1 寻找前继节点, 这时返回的 b = BaseHeader, n = null, 所以直接到 doPut 步骤 9
 - 2. doPut步骤9, 直接 CAS操作设置next节点 
@@ -448,12 +455,15 @@ doPut方法分析:
 - 4. 所以这时 idx = null, 直接到步骤 28 break 出去，操作结束
 
 再添加一个节点, 最终效果图如下:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip3.png)
 
 2.2. 再次添加 key=3, value = C 节点, 结果如图:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip4.png)
 
 这次增加了索引层 index 1
+
 涉及doPut操作：
 
 - 1. doPut步骤1 寻找前继节点, 这时返回的 b = node2, n = null, 所以直接到 doPut 步骤 9
@@ -462,12 +472,15 @@ doPut方法分析:
 - 4. 最终找到要插入index位置, 进行link操作, 步骤 33
 
 ps: 这时再put节点 key=4 value = D (情形和 Node1, Node2 一样), 最终结果:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip5.png)
 
 2.3. 再次添加 key=5, value = E 节点, 结果如图:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip6.png)
 
 这时发现索引层增加了一层
+
 我们来看 doPut 操作:
 
 - 1. doPut步骤1 寻找前继节点, 这时返回的 b = node2, n = null, 所以直接到 doPut 步骤 9
@@ -480,10 +493,13 @@ ps: 这时再put节点 key=4 value = D (情形和 Node1, Node2 一样), 最终�
 - 8. 最后就是步骤30中的link操作(j > insertionLevel, 所以先 j-- , 再for loop, 接着就满足了 )
 
 我们在插入个 key = 11, value = w (步骤和 node1, node2 一样, 这里省略了)
+
 最终如图:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip7.png)
 
 2.4. 再次添加 key=8, value = W 节点, 结果如图:
+
 ![image](https://github.com/wangjunjie0817/note/blob/master/images/skip8.png)
 
 这里和添加 key= 5 差不多, 唯一的区别就是 获取的前继节点.right != null 而已, 所以不说了
@@ -495,10 +511,267 @@ ps: 这时再put节点 key=4 value = D (情形和 Node1, Node2 一样), 最终�
 
 #### findPredecessor() 寻找前继节点
 
+总体思路是: 从矩形链表的左上角的 HeadIndex 索引开始, 先向右, 遇到 null, 或 > key 时向下, 重复向右向下找, 一直找到 对应的前继节点(前继节点就是小于 key 的最大节点)
+```java
+/**
+ * Returns a base-level node with key strictly less than given key,
+ * or the base-level header if there is no such node. Also
+ * unlinks indexes to deleted nodes found along the way. Callers
+ * rely on this side-effect of clearing indices to deleted nodes
+ * @param key the key
+ * @return a predecessor of the key
+ */
+private Node<K, V> findPredecessor(Object key, Comparator<? super K> cmp){
+    if(key == null)
+        throw new NullPointerException(); // don't postpone errors
+    for(;;){
+        for(Index<K, V> q = head, r = q.right, d;;){ // 1. 初始化数据 q 是head， r 是 最顶层 h 的右Index节点
+            if(r != null){ // 2. 对应的 r =  null, 则进行向下查找
+                Node<K, V> n = r.node;
+                K k = n.key;
+                if(n.value == null){ // 3. n.value = null 说明 节点n 正在删除的过程中
+                    if(!q.unlink(r)){ // 4. 在 index 层直接删除 r 节点, 若条件竞争发生直接进行break 到步骤1 , 重新从 head 节点开始查找
+                        break; // restart
+                    }
+                    r = q.right; //reread r // 5. 删除 节点r 成功, 获取新的 r 节点, 回到步骤 2 (还是从这层索引开始向右遍历, 直到 r == null)
+                    continue;
+                }
 
+                if(cpr(cmp, key, k) > 0){ // 6. 若 r.node.key < 参数key, 则继续向右遍历, continue 到 步骤 2处, 若 r.node.key >  参数key 直接跳到 步骤 7
+                    q = r;
+                    r = r.right;
+                    continue;
+                }
+            }
 
+            if((d = q.down) == null){ // 7. 到这边时, 已经到跳表的数据层, q.node < key < r的 或q.node < key 且 r == null; 所以直接返回 q.node
+                return q.node;
+            }
 
+            q = d; // 8 未到数据层, 进行重新赋值向下走 (为什么向下走呢? 回过头看看 跳表, 原来 上层的index 一般都是比下层的 index 个数少的)
+            r = d.right;
+        }
+    }
+}
+若寻找的过程不是很清楚, 直接看一下最上边的那张图
 
+7. doGet() 获取节点对应的值
+整个过程：
+
+寻找 key 的前继节点 b (这时b.next = null || b.next > key, 则说明不存key对应的 Node)
+接着就判断 b, b.next 与 key之间的关系(其中有些 helpDelete操作)
+直接看代码:
+
+/**
+ * Gets value for key. Almost the same as findNode, but returns
+ * the found value (to avoid retires during ret-reads)
+ *
+ *  这个 doGet 方法比较简单
+ * @param key the key
+ * @return the value, or null if absent
+ */
+private V doGet(Object key){
+    if(key == null){
+        throw new NullPointerException();
+    }
+    Comparator<? super K> cmp = comparator;
+    outer:
+    for(;;){
+        for(Node<K, V> b = findPredecessor(key, cmp), n = b.next;;){ // 1. 获取 key 的前继节点 b, 其实这时 n.key >= key
+            Object v; int c;
+            if(n == null){ // 2. n == null 说明 key 对应的 node 不存在 所以直接 return null
+                break outer;
+            }
+            Node<K, V> f = n.next;
+            if(n != b.next){ // 3. 有另外的线程修改数据, 重新来
+                break ;
+            }
+            if((v = n.value) == null){ // 4. n 是被删除了的节点, 进行helpDelete 后重新再来
+                n.helpDelete(b, f);
+                break ;
+            }
+            if(b.value == null || v == n){ // 5. b已经是删除了的节点, 则 break 后再来
+                break ;
+            }
+            if((c = cpr(cmp, key, n.key)) == 0){ // 6. 若 n.key = key 直接返回结果, 这里返回的结果有可能是 null
+                V vv = (V) v;
+                return vv;
+            }
+            if(c < 0){ // 7. c < 0说明不存在 key 的node 节点
+                break outer;
+            }
+            // 8. 运行到这一步时, 其实是 在调用 findPredecessor 后又有节点添加到 节点b的后面所致
+            b = n;
+            n = f;
+        }
+    }
+
+    return null;
+}
+
+```
+#### doRemove() 删除节点
+
+整个删除个 ConcurrentSkipListMap 里面 nonBlockingLinkedList 实现的一大亮点, 为什么呢? 因为这个 nonBlockingLinkedList 同时支持并发安全的从链表中间添加/删除操作, 而 ConcurrentLinkedQueue 只支持并发安全的从链表中间删除;
+
+删除操作:
+
+- 1. 寻找对应的节点
+- 2. 给节点的 value 至 null, node.value = null
+- 3. 将 node 有增加一个标记节点 (this.value = this 还记得哇, 不记得的直接看 node 类)
+- 4. 通过 CAS 直接将 K对应的Node和标记节点一同删除
+
+直接来看代码:
+```java
+/**
+ * Main deletion method. Locates node, nulls value, appends a
+ * deletion marker, unlinks predecessor, removes associated index
+ * nodes, and possibly reduces head index level
+ *
+ * Index nodes are cleared out simply by calling findPredecessor.
+ * which unlinks indexes to deleted nodes found along path to key,
+ * which will include the indexes to this node. This is node
+ * unconditionally. We can't check beforehand whether there are
+ * indexes hadn't been inserted yet for this node during initial
+ * search for it, and we'd like to ensure lack of garbage
+ * retention, so must call to be sure
+ *
+ * @param key the key
+ * @param value if non-null, the value that must be
+ *              associated with key
+ * @return the node, or null if not found
+ */
+final V doRemove(Object key, Object value){
+    if(key == null){
+        throw new NullPointerException();
+    }
+    Comparator<? super K> cmp = comparator;
+    outer:
+    for(;;){
+        for(Node<K, V> b = findPredecessor(key, cmp), n = b.next;;){ // 1. 获取对应的前继节点 b
+            Object v; int c;
+            if(n == null){ // 2. 节点 n 被删除 直接 return null 返回 , 因为理论上 b.key < key < n.key
+                break outer;
+            }
+            Node<K, V> f = n.next;
+            if(n != b.next){ // 3. 有其他线程在 节点b 后增加数据, 重来
+                break ;
+            }
+            if((v = n.value) == null){ // 4. 节点 n 被删除, 调用 helpDelete 后重来
+                n.helpDelete(b, f);
+                break ;
+            }
+
+            if(b.value == null || v == n){ // 5. 节点 b 删除, 重来 调用findPredecessor时会对 b节点对应的index进行清除, 而b借点吧本身会通过 helpDelete 来删除
+                break ;
+            }
+            if((c = cpr(cmp, key, n.key)) < 0){ // 6. 若n.key < key 则说明 key 对应的节点就不存在, 所以直接 return
+                break outer;
+            }
+
+            if(c > 0){ // 7. c>0 出现在 有其他线程在本方法调用findPredecessor后又在b 后增加节点, 所以向后遍历
+                b = n;
+                n = f;
+                continue ;
+            }
+
+            if(value != null && !value.equals(v)){ // 8. 若 前面的条件为真, 则不进行删除 (调用 doRemove 时指定一定要满足 key value 都相同, 具体看 remove 方法)
+                break outer;
+            }
+            if(!n.casValue(v, null)){ // 9. 进行数据的删除
+                break ;
+            }
+            if(!n.appendMarker(f) || !b.casNext(n, f)){ // 10. 进行 marker 节点的追加, 这里的第二个 cas 不一定会成功, 但没关系的 (第二个 cas 是删除 n节点, 不成功会有  helpDelete 进行删除)
+                findNode(key);  // 11. 对 key 对应的index 进行删除
+            }
+            else{
+                findPredecessor(key, cmp); //12. 对 key 对应的index 进行删除 10进行操作失败后通过 findPredecessor 进行index 的删除
+                if(head.right == null){
+                    tryReduceLevel(); // 13. 进行headIndex 对应的index 层的删除
+                }
+            }
+
+            V vv = (V) v;
+            return vv;
+
+        }
+    }
+
+    return null;
+}
+```
+
+整个doRemove代码比较简单,我就不说了..... 但问题来了, 为什么要删除时增加 marker 节点, 这到底什么作用?
+先给大家一个结论: 没有这个marker节点会有可能多删除节点, marker的存在保证之间节点一边删除一边插入数据 是安全的
+
+#### marker 节点的作用
+
+如图 demo1(没有maker节点进行删除插入操作):
+有三个链接在一起的Node (node 有三个属性 key, value, next, 且所有操作都是 cas)
+* +------+ +------+ +------+
+* ... | A |------>| B |----->| C | ...
+* +------+ +------+ +------+
+
+![image](https://github.com/wangjunjie0817/note/blob/master/images/demo1.png)
+
+步骤:
+```java
+1. Thread 2 准备在B的后面插入一个节点 D, 它先判断 B.value == null, 发现 B 没被删除(假设 value = null 是删除)
+2. Thread1 对 B 节点进行删除 B.value = null
+3. Thread 1 直接设置 A的next是 B 的next (A.casNext(B, B.next)) 成功将节点 B 删除
+4. 这时 Thread 2 new 一个节点 D, 直接设置 B.casNext(C, D) 成功
+5. 最终效果, 因为节点B被删除掉, 所以节点D也没有插入进去(没插进去指不能从以A节点为head, 通过 next() 方法获取到节点D)
+
+原因: 若队列在删除的过程中没有引入 maker 节点, 有可能导致刚刚插入的节点无缘无故的消失
+
+下面是一个例子:
+原本: 有3各节点 A, B, C 组成的队列
+A -> B -> C (A.next = B, B.next = C)
+现在有两个线程 (thread1, thread2) 进行操作, thread1 进行删除节点B, thread2 在节点B后插入节点D
+
+进行操作前: 
++------+       +------+      +------+
+|   A  |------>|   B  |----->|   C  | 
++------+       +------+      +------+
+
+进行操作后: 
+D 插入到节点B之后成功了, 可是队列的 头结点是 A, 通过A.next().next().next()..... 方法
+无法访问到节点D(D节点已经丢失了)
+            +------+      +------+
+            |   B  |----->|   D  | 
+            +------+      +------+
+                              |
+                              V
++------+                   +------+
+|   A  |------>----->----->|   C  | 
++------+                   +------+
+```
+
+如图 demo2(有 marker 节点):
+
+有三个链接在一起的Node (node 有三个属性 key, value, next, 且所有操作都是 cas)
+* +------+ +------+ +------+
+* ... | A |------>| B |----->| C | ...
+* +------+ +------+ +------+
+
+![image](https://github.com/wangjunjie0817/note/blob/master/images/demo2.png)
+
+步骤:
+```java
+1. Thread 2 准备在B的后面插入一个节点 D, 它先判断 B.value == null, 发现 B 没被删除(假设 value = null 是删除)
+2. Thread1 对 B 节点进行删除 B.value = null
+3. Thread 1 在B的后面追加一个 MarkerNode M 
+4. Thread 1 将 B 与 M 一起删除
+5. 这时你会发现 Thread 2 的 B.casNext(C, D) 发生的可能 :
+  1) 在Thread 1 设置 marker 节点前操作, 则B.casNext(C, D) 成功, B 与 marker 也一起删除
+  2) 在Thread 1 设置maker之后, 删除 b与marker之前, 则B.casNext(C, D) 操作失败(b.next 变成maker了), 所以在代码中加个 loop 循环尝试
+  3) 在Thread 1 删除 B, marker 之后, 则B.casNext(C, D) 失败(b.next变成maker, B.casNext(C,D) 操作失败, 在 loop 中重新进行尝试插入)
+6. 最终结论 maker 节点的存在致使 非阻塞链表能实现中间节点的删除和插入同时安全进行(反过来就是若没有marker节点, 有可能刚刚插入的数据就丢掉了)
+```
+
+#### ConcurrentSkipListMap 总结
+整个代码分析过来, 发现了很多有意思的东西, skip list, nonblockingLinkedList 等等!
+ConcurrentSkipListMap 是一个基于 Skip List 实现的并发安全, 非阻塞读/写/删除 的 Map, 最重要的是 它的value是有序存储的, 而且其内部是由纵横链表组成, 在进行java开发中有一定的运用场景!
 
 
 
