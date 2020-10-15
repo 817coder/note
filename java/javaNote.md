@@ -20,3 +20,6 @@
 
 10. [跳表](https://github.com/wangjunjie0817/note/blob/master/java/ConcurrentSkipListMapNote.md)
 
+11. 接口和抽象类
+
+12. 设计模式
