@@ -99,7 +99,7 @@ HashTable容器使用synchronized来保证线程安全，但在线程竞争激�
 ### ConcurrentHashMap的优势
 ConcurrentHashMap的内部实现进行了锁分离（或锁分段），所以它的锁粒度小于同步的 HashMap；同时，ConcurrentHashMap的 get() 操作也是无锁的。除非读到的值是空的才会加锁重读，我们知道HashTable容器的get方法是需要加锁的，那么ConcurrentHashMap的get操作是如何做到不加锁的呢？原因是它的get方法里将要使用的共享变量都定义成volatile。
 锁分离：首先将数据分成一段一段的存储，然后给每一段数据配一把锁，当一个线程占用锁访问其中一个段数据的时候，其他段的数据也能被其他线程访问。有些方法需要跨段，比如size()和containsValue()，它们可能需要锁定整个表而而不仅仅是某个段，这需要按顺序锁定所有段，操作完毕后，又按顺序释放所有段的锁。
-详细了解？ https://blog.csdn.net/wangjunjie0817/article/details/96775010
+详细了解？ https://blog.csdn.net/wangjunjie0817/article/details/96775010    https://juejin.im/post/6844903618143846408
 
 # 更多的并发容器
 ### 跳表
