@@ -1,5 +1,9 @@
 # ThreadLocal
 
+在这里先记一下没有在这个笔记下面的知识点：
+- InheritableThreadLocal
+- 哈希冲突问题
+
 ### 什么是ThreadLocal
 - 它能让线程拥有了自己内部独享的变量
 - 每一个线程可以通过get、set方法去进行操作
