@@ -14,7 +14,7 @@
 
 7. [Cloneable](https://github.com/wangjunjie0817/note/blob/master/java/cloneable.md)
 
-8. 迭代器
+8. [迭代器](https://github.com/wangjunjie0817/code/blob/master/javaDemo/src/main/java/com/wang/code/IteratorDemo.java)
 
 9. [HashCode和equels](https://github.com/wangjunjie0817/note/blob/master/java/equalsNote.md)
 
@@ -22,7 +22,7 @@
 
 11. 接口和抽象类
 
-12. 设计模式
+12. [设计模式](https://github.com/wangjunjie0817/code/blob/master/javaDemo/src/main/java/com/wang/code/designPatterns/package-info.java)
 
 13. Cleaner机制
 
