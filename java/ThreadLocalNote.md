@@ -1,7 +1,6 @@
 # ThreadLocal
 
 在这里先记一下没有在这个笔记下面的知识点：
-- InheritableThreadLocal
 - 哈希冲突问题
 
 ### 什么是ThreadLocal
@@ -253,13 +252,54 @@ for (int i = 0; i < 1000; i++) {
 }
 ```
 
+### InheritableThreadLocal
+InheritableThreadLocal 继承自 ThreadLocal，重写了createMap、getMap和ChileValue方法
 
+```java
+ThreadLocalMap getMap(Thread t) {
+   return t.inheritableThreadLocals;
+}
 
+/**
+ * Create the map associated with a ThreadLocal.
+ *
+ * @param t the current thread
+ * @param firstValue value for the initial entry of the table.
+ */
+void createMap(Thread t, T firstValue) {
+    t.inheritableThreadLocals = new ThreadLocalMap(this, firstValue);
+}
+```
 
+可以看到线程的另一个变量 inheritableThreadLocals 变量
+```java
+/* ThreadLocal values pertaining to this thread. This map is maintained
+ * by the ThreadLocal class. 
+ */
+ThreadLocal.ThreadLocalMap threadLocals = null;
 
+/*
+ * InheritableThreadLocal values pertaining to this thread. This map is
+ * maintained by the InheritableThreadLocal class.
+ */
+ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
+```
 
+threadLocals是在threadLocals的get方法中创建的
 
+inheritableThreadLocals其实是在线程创建子线程的Thread init方法中创建的, 如下可以看到，如果子线程的父线程inheritableThreadLocals不为null，就取父线程inheritableThreadLocals变量塞到子线程的ThreadLocals变量中。
 
+```java
+Thread parent = currentThread();
+if (inheritThreadLocals && parent.inheritableThreadLocals != null)
+        this.inheritableThreadLocals =
+            ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);
+```
+
+这里需要注意一下：
+- inheritableThreadLocals是针对父线程new 子线程使用的，如果使用线程池，inheritableThreadLocals处理的逻辑是在init方法中，由于线程是事先初始化好的，所以线程池不支持父子线程的值传递。
+
+如果线程池想使用父线程变量，可以使用阿里的开源项目 transmittable-thread-local。
 
 
 
