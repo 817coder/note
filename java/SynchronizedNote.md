@@ -8,7 +8,7 @@ Java对象结构中的对象头描述部分是实现锁机制的关键，实际�
 其中在对象头的 markword 区域是该对象关键的运行时数据，主要就是这个对象当前锁机制的记录信息。
 这里我们重点讨论和synchronized加锁过程有关的markword区域，首先需要说明几点：
 根据对象所处的锁状态的不同，markword区域的存储结构会发生变动。例如当对象处于轻量级锁状态的情况下，markword区域的存储结构是一种定义；而当对象锁级别处于偏向锁状态的情况下，markword区域的存储结构又是另一种定义
-[image](https://github.com/wangjunjie0817/note/blob/master/images/sync.png)
+![image](https://github.com/wangjunjie0817/note/blob/master/images/sync.png)
 
 ### 锁升级
 通常情况下，我们在代码中使用synchronized关键字协调多个线程的工作过程，实际上就是使用Object Monitor控制对多个线程的工作过程进行协调。synchronized关键字的执行过程从传统的理解上就是“悲观锁”设计思想的一种实现。但实际上synchronized关键字的执行过程还涉及到锁机制的升级过程，升级顺序为 自旋锁、偏向锁、轻量级锁、重量级锁。
@@ -32,7 +32,7 @@ Java对象结构中的对象头描述部分是实现锁机制的关键，实际�
 
 ### Object Monitor
 看一下Object Monitor的定义
-[image](https://github.com/wangjunjie0817/note/blob/master/images/monitorObject.png)
+![image](https://github.com/wangjunjie0817/note/blob/master/images/monitorObject.png)
 
 首先在HotSpot虚拟机中，monitor采用ObjectMonitor实现，每个线程都具有两个队列，分别为free和used，用来存放ObjectMonitor。如果当前free列表为空，线程将向全局global list请求分配ObjectMonitor。
 
@@ -40,7 +40,7 @@ ObjectMonitor对象中有两个队列，都用来保存ObjectWaiter对象，分�
 
 ObjectWaiter对象是双向链表结构，保存了_thread（当前线程）以及当前的状态TState等数据， 每个等待锁的线程都会被封装成ObjectWaiter对象。
     
-[image](https://github.com/wangjunjie0817/note/blob/master/images/monitorObject2.jpeg)
+![image](https://github.com/wangjunjie0817/note/blob/master/images/monitorObject2.jpeg)
 
 ObjectMonitor的关键属性
 
