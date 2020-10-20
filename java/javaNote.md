@@ -35,3 +35,5 @@
 17. 线程
 
 18. [Synchronized](https://github.com/wangjunjie0817/note/blob/master/java/SynchronizedNote.md)
+
+19. 线程死锁和排查
