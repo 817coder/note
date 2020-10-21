@@ -33,6 +33,7 @@ Queue
 Deque
 - ArrayDeque
 - LinkedList
+- ConcurrentLinkedQueue
 
 BlockingQueue
 - ArrayBlockingQueue
@@ -44,5 +45,6 @@ BlockingQueue
 
 BlockingDeque
 - LinkedBlockingDeque
+
 
 
