@@ -7,7 +7,7 @@ Map：
 - HashMap： 基于数组+链表实现，[详见](https://github.com/wangjunjie0817/note/blob/master/java/HashMapSourceCode.md)
 - LinkedHashMap： 基于HashMap + LinkedList 实现，[详见](https://github.com/wangjunjie0817/note/blob/master/java/LinkedHashMapSourceCode.md)
 - HashTable
-- TreeMap
+- TreeMap： 基于红黑树实现key的排序， [详见](https://github.com/wangjunjie0817/note/blob/master/java/TreeMapSourceCode.md)
 - ConcurrentHashMap
 - ConcurrentSkiplistMap
 
@@ -19,9 +19,9 @@ Collection:
 - CopyOnWriteArrayList
 
 Set
-- HashSet
-- LinkedHashSet
-- TreeSet
+- HashSet:  源码很简单，基于HashMap实现，只有一个成员变量HashMap，set中存储的对象存储为HashMap的key， Value采用一个PRESENT对象填充。提供的API都是通过封装HashMap的方法实现的
+- LinkedHashSet： 
+- TreeSet: 提供 双排 （排序 + 排重）功能，源码简单，基于TreeMap实现，value固定为Present对象，通过封装TreeMap方法，实现Set的功能
 - CopyOnWriteArraySet
 - ConcurrentSkiplistSet
 
