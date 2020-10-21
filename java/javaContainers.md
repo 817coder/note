@@ -5,7 +5,7 @@ java的容器从最基本接口方面可以分为三大类： Map、Collection�
 
 Map：
 - HashMap： 基于数组+链表实现，[详见](https://github.com/wangjunjie0817/note/blob/master/java/HashMapSourceCode.md)
-- LinkedHashMap
+- LinkedHashMap： 基于HashMap + LinkedList 实现，[详见](https://github.com/wangjunjie0817/note/blob/master/java/LinkedHashMapSourceCode.md)
 - HashTable
 - TreeMap
 - ConcurrentHashMap
