@@ -33,7 +33,6 @@ Queue
 Deque
 - ArrayDeque
 - LinkedList
-- LinkedBlockingDeque
 
 BlockingQueue
 - ArrayBlockingQueue
@@ -42,5 +41,8 @@ BlockingQueue
 - DelayQueue
 - SynchronousQueue
 - LinkedTransferQueue
+
+BlockingDeque
+- LinkedBlockingDeque
 
 
