@@ -10,7 +10,7 @@
 
 6. [java容器](https://github.com/wangjunjie0817/note/blob/master/java/javaContainers.md)
 
-6. [并发工具]()
+6. [并发工具](https://github.com/wangjunjie0817/note/tree/master/java)
 
 6. [java并发容器](https://github.com/wangjunjie0817/note/blob/master/java/concurrentContainersNote.md)
    
@@ -37,8 +37,6 @@
 16. 银行转账问题      https://www.cnblogs.com/hellocyc/p/4265765.html
 
 17. 线程
-
-18. [Synchronized](https://github.com/wangjunjie0817/note/blob/master/java/SynchronizedNote.md)
 
 19. 线程死锁和排查
 
