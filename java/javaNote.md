@@ -8,6 +8,10 @@
 
 5. [java容器](https://github.com/wangjunjie0817/note/blob/master/java/containersNote.md)
 
+6. [java容器](https://github.com/wangjunjie0817/note/blob/master/java/javaContainers.md)
+
+6. [并发工具]()
+
 6. [java并发容器](https://github.com/wangjunjie0817/note/blob/master/java/concurrentContainersNote.md)
    
 6. [Serializable](https://github.com/wangjunjie0817/note/blob/master/java/serializableNote.md)
