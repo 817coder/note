@@ -10,7 +10,7 @@
 
 6. [java容器](https://github.com/wangjunjie0817/note/blob/master/java/javaContainers.md)
 
-6. [并发工具](https://github.com/wangjunjie0817/note/tree/master/java)
+6. [并发工具](https://github.com/wangjunjie0817/note/blob/master/java/concurrentTools.md)
 
 6. [java并发容器](https://github.com/wangjunjie0817/note/blob/master/java/concurrentContainersNote.md)
    
