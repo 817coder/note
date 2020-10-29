@@ -5,3 +5,10 @@
 ### [Redis](https://github.com/wangjunjie0817/note/blob/master/Redis/RedisNote.md)
 ### [微服务](https://github.com/wangjunjie0817/note/blob/master/%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1.md)
 ### [RPC](https://github.com/wangjunjie0817/note/blob/master/RPC/RPCnote.md)
+### [Linux]()
+### [消息队列]()
+### [网络编程]()
+### [高并发系统]()
+### [分布式]()
+### [架构]()
+
