@@ -27,7 +27,7 @@ BlockingDeque
 ### BlockingQueue
 
 BlockingQueue接口实现Queue接口，它支持两个附加操作：获取元素时等待队列变为非空，以及存储元素时等待空间变得可用。相对于同一操作他提供了四种机制：抛出异常、返回特殊值、阻塞等待、超时：
-![image](https://github.com/wangjunjie0817/note/blob/master/images/queue1.png)
+![image](https://github.com/wangjunjie0817/note/blob/master/images/queue1)
 
 BlockingQueue常用于生产者和消费者场景。
 
