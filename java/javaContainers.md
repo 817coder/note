@@ -32,30 +32,11 @@ Set
 - ConcurrentSkiplistSet
 
 Queue
-- ArrayQueue：不是在java.util中实现的，而是在jmx包下，同样是动态数组，支持null值，不过取值和存储值当队列满了或者为空直接报错
-- PriorityQueue：基于大顶堆（动态数组）实现，经典的swim和spin方法，也比较简单。
-- ConcurrentLinkedQueue：
 
-Deque
-- ArrayDeque：
-- LinkedList：底层基于链表，实现了双端队列的功能
-- ConcurrentLinkedQueue：
-
-BlockingQueue
-- ArrayBlockingQueue
-- LinkedBlockingQueue
-- PriorityBlockingQueue
-- DelayQueue
-- SynchronousQueue
-- LinkedTransferQueue
-
-BlockingDeque
-- LinkedBlockingDeque
-
+详见：https://github.com/wangjunjie0817/note/blob/master/java/queue.md
 
 ### 最后补充知乎上关于容器初始化容积的问题
 
-JDK1.7的实现中：
 1. HashMap 和 HashSet 的默认大小是16。
 2. Hashtable 的默认大小是11。
 3. ArrayList 和 Vector 的默认大小是10。
