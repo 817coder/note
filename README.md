@@ -1,5 +1,5 @@
 ### [java](https://github.com/wangjunjie0817/note/blob/master/java/javaNote.md)
-### [jvmN](https://github.com/wangjunjie0817/note/blob/master/jvm/jvmNote.md)
+### [jvm](https://github.com/wangjunjie0817/note/blob/master/jvm/jvmNote.md)
 ### [mySQL](https://github.com/wangjunjie0817/note/blob/master/jvm/jvmNote.md)
 ### [Kafka](https://github.com/wangjunjie0817/note/blob/master/Kafka/KafkaNote.md)
 ### [Redis](https://github.com/wangjunjie0817/note/blob/master/Redis/RedisNote.md)
