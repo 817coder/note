@@ -598,8 +598,112 @@ private List<Runnable> drainQueue() {
 ```
 
 
+### FutureTask
 
+```java
+public void run() {
+    if (state != NEW ||
+        !UNSAFE.compareAndSwapObject(this, runnerOffset,
+                                     null, Thread.currentThread()))
+        return;
+    try {
+        Callable<V> c = callable;
+        if (c != null && state == NEW) {
+            V result;
+            boolean ran;
+            try {
+                result = c.call();
+                ran = true;
+            } catch (Throwable ex) {
+                result = null;
+                ran = false;
+                setException(ex);
+            }
+            if (ran)
+                set(result);
+        }
+    } finally {
+        // runner must be non-null until state is settled to
+        // prevent concurrent calls to run()
+        runner = null;
+        // state must be re-read after nulling runner to prevent
+        // leaked interrupts
+        int s = state;
+        if (s >= INTERRUPTING)
+            handlePossibleCancellationInterrupt(s);
+    }
+}
+```
 
+finishCompletion: 移除并unpark所有阻塞的线程
+
+```
+private void finishCompletion() {
+    // assert state > COMPLETING;
+    for (WaitNode q; (q = waiters) != null;) {
+        if (UNSAFE.compareAndSwapObject(this, waitersOffset, q, null)) {
+            for (;;) {
+                Thread t = q.thread;
+                if (t != null) {
+                    q.thread = null;
+                    LockSupport.unpark(t);
+                }
+                WaitNode next = q.next;
+                if (next == null)
+                    break;
+                q.next = null; // unlink to help gc
+                q = next;
+            }
+            break;
+        }
+    }
+
+    done();
+
+    callable = null;        // to reduce footprint
+}
+```
+
+awaitDone: 获取结果
+
+```java
+private int awaitDone(boolean timed, long nanos)
+    throws InterruptedException {
+    final long deadline = timed ? System.nanoTime() + nanos : 0L;
+    WaitNode q = null;
+    boolean queued = false;
+    for (;;) {
+        if (Thread.interrupted()) {
+            removeWaiter(q);
+            throw new InterruptedException();
+        }
+
+        int s = state;
+        if (s > COMPLETING) {
+            if (q != null)
+                q.thread = null;
+            return s;
+        }
+        else if (s == COMPLETING) // cannot time out yet
+            Thread.yield();
+        else if (q == null)
+            q = new WaitNode();
+        else if (!queued)
+            queued = UNSAFE.compareAndSwapObject(this, waitersOffset,
+                                                 q.next = waiters, q);
+        else if (timed) {
+            nanos = deadline - System.nanoTime();
+            if (nanos <= 0L) {
+                removeWaiter(q);
+                return state;
+            }
+            LockSupport.parkNanos(this, nanos);
+        }
+        else
+            LockSupport.park(this);
+    }
+}
+```
 
 
 
