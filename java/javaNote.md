@@ -45,3 +45,5 @@
 22. [DCL问题](https://github.com/wangjunjie0817/note/blob/master/java/DCL.md)
 
 23. [Unsafe](https://github.com/wangjunjie0817/note/blob/master/java/Unsafe.md)
+
+24. Alibaba Sentinel https://zhuanlan.zhihu.com/p/102000507 https://juejin.cn/post/6844903940530634760
