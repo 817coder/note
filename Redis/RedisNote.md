@@ -669,7 +669,7 @@ rename-command flushall ""
 
 server：requirepass pass
 
-client：redis-cli -p 6379 -a password
+client：redis-cli -p 6379 -a password 
 
 ##### SSL安全
 
