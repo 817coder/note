@@ -1,8 +1,5 @@
 ### Redis
 
-#### 字符串扩容
-
-少于1M情况下翻倍扩容，多余1M，每次增加1M，字符串最大长度512M
 
 #### 命令汇总
 
@@ -121,6 +118,9 @@ SENTINEL reset [pattern] - 这个命令将重置所有匹配名字的 masters。
 SENTINEL failover [master name] - 如果 master 不可到达，强制执行一个故障转移，而不征求其他 Sentinel 的同意。
 
 #### 数据结构
+#### 字符串
+
+扩容，少于1M情况下翻倍扩容，多余1M，每次增加1M，字符串最大长度512M
 
 ##### list
 
