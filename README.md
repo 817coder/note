@@ -9,6 +9,6 @@
 ### [消息队列]()
 ### [网络编程]()
 ### [高并发系统]()
-### [分布式](https://github.com/wangjunjie0817/note/tree/master/%E5%88%86%E5%B8%83%E5%BC%8F)
+### [分布式](https://github.com/wangjunjie0817/note/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%88%86%E5%B8%83%E5%BC%8F.md)
 ### [架构]()
 
