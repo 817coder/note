@@ -8,37 +8,39 @@
 
 5. [java容器](https://github.com/wangjunjie0817/note/blob/master/java/javaContainers.md)
 
-6. [并发工具](https://github.com/wangjunjie0817/note/blob/master/java/concurrentTools.md)
+6. [Synchronized](https://github.com/wangjunjie0817/note/blob/master/java/SynchronizedNote.md)
 
-6. [java并发容器](https://github.com/wangjunjie0817/note/blob/master/java/concurrentContainersNote.md)
+7. [happens-before](https://github.com/wangjunjie0817/note/blob/master/java/happens-before.md)
+
+8. [volatile](https://github.com/wangjunjie0817/note/blob/master/java/volatileSourceCode.md)
+
+9. [AQS](https://github.com/wangjunjie0817/note/blob/master/java/AQS.md)
+
+10. [线程池体系](https://github.com/wangjunjie0817/note/blob/master/java/ThreadPool.md)
+
+11. [ThreadPoolExecutor源码](https://github.com/wangjunjie0817/note/blob/master/java/ThreadPoolSrc.md)
+
+12. [java并发容器](https://github.com/wangjunjie0817/note/blob/master/java/concurrentContainersNote.md)
    
-6. [Serializable](https://github.com/wangjunjie0817/note/blob/master/java/serializableNote.md)
+13. [Serializable](https://github.com/wangjunjie0817/note/blob/master/java/serializableNote.md)
 
-7. [Cloneable](https://github.com/wangjunjie0817/note/blob/master/java/cloneable.md)
+14. [Cloneable](https://github.com/wangjunjie0817/note/blob/master/java/cloneable.md)
 
-8. [迭代器](https://github.com/wangjunjie0817/code/blob/master/javaDemo/src/main/java/com/wang/code/IteratorDemo.java)
+15. [迭代器](https://github.com/wangjunjie0817/code/blob/master/javaDemo/src/main/java/com/wang/code/IteratorDemo.java)
 
-9. [HashCode和equels](https://github.com/wangjunjie0817/note/blob/master/java/equalsNote.md)
+16. [HashCode和equels](https://github.com/wangjunjie0817/note/blob/master/java/equalsNote.md)
 
-10. [跳表](https://github.com/wangjunjie0817/note/blob/master/java/ConcurrentSkipListMapNote.md)
+17. [跳表](https://github.com/wangjunjie0817/note/blob/master/java/ConcurrentSkipListMapNote.md)
 
-11. 接口和抽象类
+18. [设计模式](https://github.com/wangjunjie0817/code/blob/master/javaDemo/src/main/java/com/wang/code/designPatterns/package-info.java)
 
-12. [设计模式](https://github.com/wangjunjie0817/code/blob/master/javaDemo/src/main/java/com/wang/code/designPatterns/package-info.java)
+19. Cleaner机制
 
-13. Cleaner机制
+20. [ThreadLocal](https://github.com/wangjunjie0817/note/blob/master/java/ThreadLocalNote.md)
 
-14. IO
+20. [银行转账问题](https://www.cnblogs.com/hellocyc/p/4265765.html)
 
-15. [ThreadLocal](https://github.com/wangjunjie0817/note/blob/master/java/ThreadLocalNote.md)
-
-16. 银行转账问题      https://www.cnblogs.com/hellocyc/p/4265765.html
-
-17. 线程
-
-19. 线程死锁和排查
-
-20. 银行家算法 https://www.cnblogs.com/128-cdy/p/12188340.html    https://www.bilibili.com/video/BV1kb41147CT?from=search&seid=16771923104469559155   https://www.pianshen.com/article/9478374899/
+21. 银行家算法 https://www.cnblogs.com/128-cdy/p/12188340.html    https://www.bilibili.com/video/BV1kb41147CT?from=search&seid=16771923104469559155   https://www.pianshen.com/article/9478374899/
 
 21. [happens-before](https://github.com/wangjunjie0817/note/blob/master/java/happens-before.md)
 
@@ -46,4 +48,4 @@
 
 23. [Unsafe](https://github.com/wangjunjie0817/note/blob/master/java/Unsafe.md)
 
-24. Alibaba Sentinel https://zhuanlan.zhihu.com/p/102000507 https://juejin.cn/post/6844903940530634760
+24. [Alibaba Sentinel](https://zhuanlan.zhihu.com/p/102000507) https://juejin.cn/post/6844903940530634760
