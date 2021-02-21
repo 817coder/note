@@ -40,9 +40,7 @@
 
 20. [银行转账问题](https://www.cnblogs.com/hellocyc/p/4265765.html)
 
-21. 银行家算法 https://www.cnblogs.com/128-cdy/p/12188340.html    https://www.bilibili.com/video/BV1kb41147CT?from=search&seid=16771923104469559155   https://www.pianshen.com/article/9478374899/
-
-21. [happens-before](https://github.com/wangjunjie0817/note/blob/master/java/happens-before.md)
+21. [银行家算法](https://www.cnblogs.com/128-cdy/p/12188340.html)    https://www.bilibili.com/video/BV1kb41147CT?from=search&seid=16771923104469559155   https://www.pianshen.com/article/9478374899/
 
 22. [DCL问题](https://github.com/wangjunjie0817/note/blob/master/java/DCL.md)
 
