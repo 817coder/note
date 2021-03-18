@@ -916,9 +916,22 @@ Preferred 领导者选举主要是 Kafka 为了避免部分 Broker 负载过重�
 
 引用 Leader Epoch 机制后，Follower 副本 B 重启回来后，需要向 A 发送一个特殊的请求去获取 Leader 的 LEO 值。在这个例子中，该值为 2。当获知到 Leader LEO=2 后，B 发现该 LEO 值不比它自己的 LEO 值小，而且缓存中也没有保存任何起始位移值 > 2 的 Epoch 条目，因此 B 无需执行任何日志截断操作。这是对高水位机制的一个明显改进，即副本是否执行日志截断不再依赖于高水位进行判断。
 
-#### kafka性能调优
+#### kafka为什么性能高？
 
-参考geek时间最后一课
+partition 并行处理
+
+顺序写磁盘，充分利用磁盘特性
+
+利用了现代操作系统分页存储 Page Cache 来利用内存提高 I/O 效率
+
+采用了零拷贝技术
+
+Producer 生产的数据持久化到 broker，采用 mmap 文件映射，实现顺序的快速写入
+
+Customer 从 broker 读取数据，采用 sendfile，将磁盘文件读到 OS 内核缓冲区后，转到 NIO buffer进行网络发送，减少 CPU 消耗
+
+https://zhuanlan.zhihu.com/p/183808742?utm_source=wechat_timeline
+
 
 
 
